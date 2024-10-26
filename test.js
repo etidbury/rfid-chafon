@@ -2,7 +2,7 @@ var createRfid = require('./dist/index').createRfid;
 
 // let rfid = new RFID('/dev/tty.usbserial');
 //let rfid = createRfid('chafon','/dev/cu.usbmodem__wG9442_T3073');
-let rfid = createRfid('chafon','/dev/tty.usbmodem__wG9442_T3073');
+let rfid = createRfid('chafon','/dev/ttyUSB0');
 
 
 (async()=>{
