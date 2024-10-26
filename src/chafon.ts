@@ -1,4 +1,4 @@
-import { parsers } from 'serialport'
+// import { parsers } from 'serialport'
 import * as Debug from 'debug'
 import { EventEmitter } from 'events'
 
@@ -13,8 +13,9 @@ const CMD_BEEP = 'AADD000401030A08'
 
 const CMD_READ = 'AADD0003010C0D'
 
-const debug = Debug('ulfalfa:rfid:chafon')
-const debug2 = Debug('ulfalfa:rfid:chafon:parser')
+// const debug = Debug('ulfalfa:rfid:chafon')
+// const debug2 = Debug('ulfalfa:rfid:chafon:parser')
+
 
 interface ChafonResult {
   data: Buffer
@@ -53,7 +54,7 @@ class ChafonParser extends Transform {
       }
     }
 
-    debug2(
+    console.log(
       `Message ${id} with length ${length} arrived (CSUM:${csum === 0}) = `,
       data
     )
@@ -65,7 +66,7 @@ class ChafonParser extends Transform {
     encoding: string,
     callback: TransformCallback
   ): void {
-    debug2(
+    console.log(
       `Chunk arrived with ${chunk.length} byte, we alreay have ${
         this.byteCount
       }`,
@@ -79,7 +80,7 @@ class ChafonParser extends Transform {
       this.byteCount > 4 &&
       this.buffer.readUInt16BE(2) === this.byteCount - 4
     ) {
-      debug2('Message complete')
+      console.log('Message complete')
       this.parse()
 
       this.byteCount = 0
@@ -94,7 +95,7 @@ export class ChafonReader extends RFIDReader {
   parser: ChafonParser
 
   constructor(port = '/dev/ttyUSB0') {
-    super(port, 38400)
+    super(port, 57600)
 
     this.parser = new ChafonParser()
     this.serialPort.pipe(this.parser)
@@ -106,14 +107,14 @@ export class ChafonReader extends RFIDReader {
     return new Promise((resolve, reject) => {
       this.parser.once('data', resolve)
 
-      debug('>Send Command', cmd)
-      this.serialPort.write(cmd, (err, result) => {
+      console.debug('>Send Command', cmd)
+      this.serialPort.write(cmd, (err) => {
         if (err) {
           reject(err)
         }
       })
     }).then(data => {
-      debug('< returned', data)
+      console.debug('< returned', data)
       return data as ChafonResult
     })
   }
@@ -129,7 +130,7 @@ export class ChafonReader extends RFIDReader {
   }
 
   read(): Promise<string> {
-    debug('Entered Read')
+    console.debug('Entered Read')
 
     return this.doCommand(CMD_READ).then(data => {
       if (!data.crc) {
@@ -146,7 +147,7 @@ export class ChafonReader extends RFIDReader {
   }
 
   protected atomicWrite(id: string): Promise<void> {
-    debug('Entered AtomicWrite')
+    console.debug('Entered AtomicWrite')
 
     const cmdBuffer = Buffer.alloc(50)
     cmdBuffer.write('AADD0009', 'hex')
@@ -174,7 +175,7 @@ export class ChafonReader extends RFIDReader {
     pos++
 
     return this.doCommand(cmdBuffer.slice(0, pos)).then(data => {
-      debug('Write Result', data)
+      console.debug('Write Result', data)
       return
     })
   }

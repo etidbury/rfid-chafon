@@ -1,5 +1,6 @@
-import * as SerialPort from 'serialport'
-import { parsers } from 'serialport'
+// import {SerialPort} from 'serialport'
+
+// import { parsers } from 'serialport'
 import * as Debug from 'debug'
 import { EventEmitter } from 'events'
 
@@ -57,7 +58,7 @@ export class D302Reader extends RFIDReader {
           debug('Code read', code)
           resolve(code)
         })
-        this.serialPort.write(cmd, (err, result) => {
+        this.serialPort.write(cmd, undefined,(err: any) => {
           if (err) {
             reject(err)
           }
@@ -68,7 +69,7 @@ export class D302Reader extends RFIDReader {
     })
   }
 
-  protected atomicWrite(id): Promise<void> {
+  protected atomicWrite(id: string): Promise<void> {
     debug('Atomic Write', id)
     return new Promise((resolve, reject) => {
       const cmdBuffer = Buffer.from('0201a50b000000000000' + id + 'AA03', 'hex')
@@ -82,7 +83,7 @@ export class D302Reader extends RFIDReader {
         resolve()
       })
 
-      this.serialPort.write(cmdBuffer, (err, result) => {
+      this.serialPort.write(cmdBuffer,undefined, (err: any) => {
         if (err) {
           reject(err)
         }
@@ -116,7 +117,7 @@ export class D302Reader extends RFIDReader {
           }
         })
 
-        this.serialPort.write(cmd, (err, result) => {
+        this.serialPort.write(cmd,undefined, (err: any) => {
           debug('CMD written', cmd)
           if (err) {
             reject(err)

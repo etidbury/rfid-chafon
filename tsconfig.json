@@ -9,5 +9,5 @@
     "typeRoots": ["node_modules/@types"]
   },
   "include": ["src/**/*", ],
-  "exclude": ["src/**/*.spec.ts"]
+  "exclude": ["src/**/*.spec.ts","node_modules/**/*"]
 }

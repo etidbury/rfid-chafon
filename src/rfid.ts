@@ -1,4 +1,4 @@
-import * as SerialPort from 'serialport'
+import {SerialPort} from 'serialport'
 
 import { Observable, interval } from 'rxjs'
 import { switchMap, filter, distinctUntilChanged } from 'rxjs/operators'
@@ -11,7 +11,8 @@ export abstract class RFIDReader {
   }
 
   constructor(port = '/dev/ttyUSB0', baudRate: number) {
-    this.serialPort = new SerialPort(port, {
+    this.serialPort = new SerialPort({
+      path:port,
       baudRate,
       dataBits: 8,
       stopBits: 1,

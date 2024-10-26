@@ -1,3 +1,6 @@
+https://github.com/ulfalfa/rfid-chafon
+
+
 #RFID-Chafon
 
 I recently bought a usb rfid reader. The "driver" and the "app" were propietaries solutions for windows xp and not usable by mac or linux. So I decided to reverse engineer the protocol and implement this small node js lib.
