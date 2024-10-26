@@ -18,9 +18,9 @@ let rfid = createRfid('chafon','/dev/ttyUSB0');
 	// const beep=await rfid.beep();
 	// console.log('beep',beep);
 
-	console.log(" get info");
-	const info=await rfid.getInfo();
-	console.log('info',info);
+	// console.log(" get info");
+	// const info=await rfid.getInfo();
+	// console.log('info',info);
 	
 	while (true){
 		console.log("reading");
